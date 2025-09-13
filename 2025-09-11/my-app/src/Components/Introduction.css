@@ -1,0 +1,19 @@
+:root{
+    display: flex;
+    flex-direction: column;
+    flex-basis: auto;
+    gap: 50px;
+}
+
+div{
+    padding: 1.5em;
+}
+
+.list {
+    padding: 1.5em;
+  height: 90px;
+  width: 90%;
+  overflow: hidden;
+  overflow-y: scroll;
+  background-color: rgb(105, 136, 104);
+}
