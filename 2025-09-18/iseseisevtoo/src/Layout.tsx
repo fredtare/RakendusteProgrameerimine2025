@@ -4,7 +4,6 @@ import { AppBar, Toolbar, Button } from '@mui/material'
 export default function Layout() {
   return (
     <>
-      {/* Simple nav bar */}
       <AppBar position="static">
         <Toolbar>
           <Button color="inherit" component={Link} to="/">Home</Button>
@@ -12,7 +11,7 @@ export default function Layout() {
           <Button color="inherit" component={Link} to="/gallery">Gallery</Button>
         </Toolbar>
       </AppBar>
-      
+
       <main style={{ padding: 20 }}>
         <Outlet />
       </main>
