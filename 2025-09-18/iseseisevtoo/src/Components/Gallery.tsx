@@ -21,7 +21,7 @@ return (
             <img
             src={imageValue}
             alt="Pilt toidust"
-            style={{ maxWidth:"300%", maxHeight:"20%", objectFit:"scale-down"}}   />
+            style={{ maxWidth:"300%", maxHeight:"40%", objectFit:"scale-down"}}   />
     </Box>
   </Grid>
 </Grid>

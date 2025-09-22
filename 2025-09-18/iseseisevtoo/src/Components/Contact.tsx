@@ -1,6 +1,9 @@
 import React from "react";
-import { Box, TextField, Button } from "@mui/material";
+import { Box, Grid, TextField, Button, CssBaseline, Paper } from "@mui/material";
 import useLocalStorage from "../hooks/useLocalStorage.ts";
+import {ThemeProvider, useTheme} from "@mui/material/styles";
+import { theme } from "../assets/theme.ts"
+
 
 export default function Contact() {
   const [name, setName, removeName] = useLocalStorage<string>("contact_name", "");
@@ -14,7 +17,12 @@ export default function Contact() {
 
   return (
     <>
+    <ThemeProvider theme={theme}>
+        <CssBaseline/>
+        <Paper variant="outlined" elevation={12}>
+
       <h2>Contact Info</h2>
+     <Grid size={4} spacing={15}>
       <Box
         component="form"
         sx={{ "& > :not(style)": { m: 1, width: "25ch" } }}
@@ -47,7 +55,9 @@ export default function Contact() {
           value={message}
           onChange={(e) => setMessage(e.target.value)}
         />
+        </Box>
 
+        <Box>
         <Button variant="contained" type="submit">
           Save
         </Button>
@@ -55,6 +65,10 @@ export default function Contact() {
           Clear All
         </Button>
       </Box>
-    </>
+      </Grid>
+            <br></br>
+      </Paper>
+      </ThemeProvider>
+      </>
   );
 }

@@ -1,6 +1,6 @@
 // useLocalStorage.ts
 import { useState, useEffect } from "react";
-
+//allikas: https://dev.to/saiful7778/managing-local-storage-in-react-with-uselocalstorage-hook-hee
 function useLocalStorage<T>(key: string, initialValue: T) {
   // Lazy init: check if localStorage already has something for this key
   const [storedValue, setStoredValue] = useState<T>(() => {

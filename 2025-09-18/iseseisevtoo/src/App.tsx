@@ -9,24 +9,29 @@ import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 
-
-
+import { ThemeProvider, CssBaseline, Paper } from "@mui/material";
+import {theme } from './assets/theme';
 
 export default function App() {
   return (
     <>
-
+    <ThemeProvider theme = {theme}>
+      <CssBaseline/>
+      <Paper variant='outlined'>
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
         <Toolbar variant="dense">
           <Button component = { Link } to='/about' color="inherit">All About Us</Button>
           <Button component = { Link } to='/gallery' color="inherit">Pretty Pictures</Button>
           <Button component = { Link } to='/contact' color="inherit">Email us</Button>
+
         </Toolbar>
       </AppBar>
     </Box>
       <br />
       <Outlet />
+      </Paper>
+      </ThemeProvider>
     </>
   )
 }
