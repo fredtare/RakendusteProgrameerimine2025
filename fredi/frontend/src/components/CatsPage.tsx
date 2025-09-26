@@ -12,5 +12,7 @@ import Cats from "./Cats"
 export default function AppsPage() {
   return (
  < Cats />
+
+ 
   )
 }

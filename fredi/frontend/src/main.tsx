@@ -4,6 +4,7 @@ import { RouterProvider, createHashRouter } from 'react-router-dom'
 import App from './App'
 import AppsPage from './components/CatsPage'
 import Admin from './components/Admin'
+import Weather from './components/Weather'
 
 
 const router = createHashRouter([
@@ -11,7 +12,8 @@ const router = createHashRouter([
     element: <App />,
   children: [
     { path: '/apps', element: <AppsPage /> },
-    { path: '/admin', element: <Admin /> }
+    { path: '/admin', element: <Admin /> },
+    { path: '/weather', element: <Weather /> }
   ]},
 
 ])
