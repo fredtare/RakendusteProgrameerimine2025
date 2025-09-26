@@ -11,9 +11,9 @@ return (
 <Grid container spacing={2}>
   <Grid size={4}>
     <Stack spacing={2}>
-        <Button variant="contained" color="inherit" onClick={() => setImageValue ("/hotDogs.jpg")}>Gurmee Hot Dog, maailma tasemel!</Button>
-        <Button variant="contained" color="inherit" onClick={() => setImageValue ("/SuvineSalat.jpg")}>Jaapanipärane värske suvesalat!!</Button>
-        <Button variant="contained" color="inherit" onClick={() => setImageValue ("/finerid.jpg")}>Saksapärase emulgeeritud vorsti tartare</Button>
+        <Button variant="contained" color="inherit" onClick={() => setImageValue ("/RakendusteProgrameerimine2025/hotDogs.jpg")}>Gurmee Hot Dog, maailma tasemel!</Button>
+        <Button variant="contained" color="inherit" onClick={() => setImageValue ("/RakendusteProgrameerimine2025/SuvineSalat.jpg")}>Jaapanipärane värske suvesalat!!</Button>
+        <Button variant="contained" color="inherit" onClick={() => setImageValue ("/RakendusteProgrameerimine2025/finerid.jpg")}>Saksapärase emulgeeritud vorsti tartare</Button>
     </Stack>
   </Grid>
   <Grid size={8}>
