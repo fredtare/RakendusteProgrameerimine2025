@@ -58,5 +58,16 @@ exports.update = (req, res) => {
   res.status(200).json(cat);
 };
 
+exports.delete = (req, res) => {
+  const { id } = req.params; // Expect ID from URL params (e.g., /cats/:id)
 
-exports.delete = (req, res) => {};
+  const cat = cats.find((c) => c.id === id && !c.deleted);
+
+  if (!cat) {
+    return res.status(404).json({ error: "Cat not found" });
+  }
+
+  cat.deleted = true;
+  res.status(200).json({ message: "Cat marked as deleted", cat });
+};
+

@@ -14,6 +14,6 @@ router.use(catsRouteMiddleware);
 router.get("/", catsGetRouteMiddleware, catsController.read);
 router.post("/", catsController.create);
 router.put("/", catsUpdateRouteMiddleware, catsController.update);
-router.delete("/", catsController.delete);
+router.delete("/:id", catsController.delete);
 
 module.exports = router;
