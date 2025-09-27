@@ -4,7 +4,7 @@ const catsRouteMiddleware = (req, res, next) => {
 };
 
 const catsGetRouteMiddleware = (req, res, next) => {
-  console.log("GET middleware");
+  console.log("middleware siin");
   next();
 };
 

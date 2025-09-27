@@ -15,6 +15,7 @@ const Cats = () => {
 
   const fetchCats = async () => {
     const response = await fetch("http://localhost:3000/cats");
+
     const data = await response.json();
 
     setCats(data);
@@ -35,12 +36,10 @@ const Cats = () => {
 
 type CatsListProps = {
   cats: Cat[];
-  age: number;
 };
 
 const CatsList: React.FC<CatsListProps> = ({ cats, age }) => {
     
-    console.log(age);
   return (
     <List>
       {cats.map((cat) => (

@@ -1,3 +1,4 @@
+
 const cats = [
   {
     id: "7d613b93-fa3e-4ef3-a9d2-e09e5ca6e4e6",
@@ -15,13 +16,22 @@ const cats = [
   },
 ];
 
-const fredi = {
-    name: "Fredu",
-}
+const {v4: uuidv4} = require("uuid");
 
 exports.create = (req, res) => {
-    const { name: myName, school} = req.body;
-    console.log(req.body);
+      const { name } = req.body;
+    const addedCat = {
+      id: uuidv4(),
+      name,
+      createdAt: Date.now(),
+      updatedAt: null,
+      deleted: false,
+    }
+
+    cats.push(addedCat);
+
+
+    console.log("controller siin", addedCat);
     res.sendStatus(201);
 };
 
