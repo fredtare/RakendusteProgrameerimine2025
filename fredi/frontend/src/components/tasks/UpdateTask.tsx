@@ -17,7 +17,7 @@ const UpdateTask: React.FC<UpdateTaskProps> = ({ fetchTasks, selectedId }) => {
           Accept: "application/json",
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ id: selectedId, name: newTaskName }),
+        body: JSON.stringify({ id: selectedId, taskName: newTaskName }),
       });
 
       if (response.ok) {
