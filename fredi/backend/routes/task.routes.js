@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const catsController = require("../controllers/task.controller");
+const taskController = require("../controllers/task.controller");
 const {
   taskRouteMiddleware,
   taskGetRouteMiddleware,

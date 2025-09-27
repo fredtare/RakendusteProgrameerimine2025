@@ -1,6 +1,8 @@
 import { Box, List, ListItem, Typography, Switch, Button } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import SubmitTask from "./tasks/SubmitTask"
+import UpdateTask from "./tasks/SubmitTask"
+
 type Task = {
   id: string;
   taskName: string;
@@ -11,11 +13,11 @@ type Task = {
 
 
 const Tasks = () => {
-  const [tasks, setTasks] = useState<Cat[]>([]);
+  const [tasks, setTasks] = useState<Task[]>([]);
   const [newId, setNewId] = useState<string | null>(null);
 
   const fetchTasks = async () => {
-    const response = await fetch("http://localhost:3000/tasks");
+    const response = await fetch("http://localhost:3000/task");
     const data = await response.json();
     setTasks(data);
   };
@@ -26,7 +28,7 @@ const Tasks = () => {
 
 const handleDelete = async (id: string) => {
   try {
-    const response = await fetch(`http://localhost:3000/tasks/${id}`, {
+    const response = await fetch(`http://localhost:3000/task/${id}`, {
       method: "DELETE",
       headers: { "Content-Type": "application/json" },
     });

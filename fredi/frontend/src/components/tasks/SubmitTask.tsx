@@ -1,16 +1,16 @@
 import { Box, Button, Stack, TextField } from "@mui/material";
-import React, { useId, useState } from "react";
+import React, { useState } from "react";
 
-type SubmitTaskProps = {
-  fetchCats: () => void;
+type SubmitTaskListProps = {
+  fetchTasks: () => void;
 };
 
-const SubmitTask = ({ fetchTasks }: SubmitTaskProps) => {
+const SubmitTask = ({ fetchTasks }: SubmitTaskListProps) => {
   const [taskName, setTaskName] = useState("");
 
   const submitTask = async () => {
     try {
-      const response = await fetch("http://localhost:3000/tasks", {
+      const response = await fetch("http://localhost:3000/task", {
         method: "POST",
         headers: {
           Accept: "application/json",
@@ -49,7 +49,7 @@ const SubmitTask = ({ fetchTasks }: SubmitTaskProps) => {
             onChange={(event) => setTaskName(event.target.value)}
           />
           <Button variant="contained" color="success" type="submit">
-            Add
+            Lisa ülesanne
           </Button>
         </Stack>
       </form>

@@ -5,6 +5,7 @@ import App from './App'
 import AppsPage from './components/CatsPage'
 import Admin from './components/Admin'
 import Weather from './components/Weather'
+import Tasks from './components/Tasks'
 
 
 const router = createHashRouter([
@@ -13,7 +14,8 @@ const router = createHashRouter([
   children: [
     { path: '/apps', element: <AppsPage /> },
     { path: '/admin', element: <Admin /> },
-    { path: '/weather', element: <Weather /> }
+    { path: '/weather', element: <Weather /> },
+    { path: '/tasks', element: <Tasks /> }
   ]},
 
 ])

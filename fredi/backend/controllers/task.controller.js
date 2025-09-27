@@ -29,7 +29,7 @@ exports.create = [
   checkValidation,
   (req, res) => {
     const { taskName } = req.body;
-    const addedysdk = {
+    const addedTask = {
       id: uuidv1(),
       taskName,
       updatedAt: null,
