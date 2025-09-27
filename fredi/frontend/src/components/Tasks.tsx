@@ -1,7 +1,8 @@
-import { Box, List, ListItem, Typography, Switch, Button } from "@mui/material";
+import { Box, List, ListItem, Typography, Switch } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import SubmitTask from "./tasks/SubmitTask"
-import UpdateTask from "./tasks/SubmitTask"
+import SubmitTask from "./tasks/SubmitTask";
+import UpdateTask from "./tasks/UpdateTask";
+import DeleteTask from "./tasks/DeleteTask";
 
 type Task = {
   id: string;
@@ -10,56 +11,41 @@ type Task = {
   deleted: boolean;
 };
 
-
-
 const Tasks = () => {
   const [tasks, setTasks] = useState<Task[]>([]);
-  const [newId, setNewId] = useState<string | null>(null);
+  const [selectedId, setSelectedId] = useState<string | null>(null);
 
   const fetchTasks = async () => {
-    const response = await fetch("http://localhost:3000/task");
-    const data = await response.json();
-    setTasks(data);
+    try {
+      const response = await fetch("http://localhost:3000/task");
+      const data = await response.json();
+      setTasks(data);
+    } catch (error) {
+      console.error("Failed to fetch tasks:", error);
+    }
   };
 
   useEffect(() => {
     fetchTasks();
   }, []);
 
-const handleDelete = async (id: string) => {
-  try {
-    const response = await fetch(`http://localhost:3000/task/${id}`, {
-      method: "DELETE",
-      headers: { "Content-Type": "application/json" },
-    });
-
-    if (response.ok) {
-      console.log("Tubli, ülesanne tehtud!");
-      fetchTasks();
-    } else {
-      console.warn("Em mingi jama on backendiga ühendusel");
-      fetchTasks();
-    }
-  } catch (error) {
-    console.error(error);
-    console.log("Error esines");
-  }
-};
-
-
   return (
     <Box>
-      <Typography variant="h1">Mida sa veel tegema peaks (omaenda sõnul)</Typography>
-{/* siin muuda ondelete millekski kasulikuks */}
-<TasksList
-  tasks={tasks}
-  selectedId={newId}
-  onSelect={(id) => setNewId(id)}
-  onDelete={handleDelete}
-/>
+      <Typography variant="h1" sx={{ mb: 2 }}>
+        Mida sa veel tegema peaks (omaenda sõnul)
+      </Typography>
 
-      <SubmitTask fetchTasks={fetchTasks} />
-      <UpdateTask fetchTasks={fetchTasks} selectedId={newId} />
+      <TasksList
+        tasks={tasks}
+        selectedId={selectedId}
+        onSelect={setSelectedId}
+        fetchTasks={fetchTasks}
+      />
+
+      <Box sx={{ display: "flex", gap: 2, mt: 4 }}>
+        <SubmitTask fetchTasks={fetchTasks} />
+        {selectedId && <UpdateTask fetchTasks={fetchTasks} selectedId={selectedId} />}
+      </Box>
     </Box>
   );
 };
@@ -67,36 +53,34 @@ const handleDelete = async (id: string) => {
 type TaskListProps = {
   tasks: Task[];
   selectedId: string | null;
-  onSelect: (id: string) => void;
-  onDelete: (id: string) => void;
+  onSelect: (id: string | null) => void; // Updated to allow deselecting
+  fetchTasks: () => void;
 };
-//saada koodi seest siia päisesse asjad mis tahad teha
-const TasksList: React.FC<TaskListProps> = ({ tasks, selectedId, onSelect, onDelete }) => (
-  <List>
-    {tasks.map((task) => (
-      <ListItem key={task.id}>
-        {JSON.stringify(task)}
-        <Switch
-          value={task.id}
-          checked={selectedId === task.id}
-          onChange={() => onSelect(task.id)}
-          inputProps={{ "aria-label": "Muuda  oma ülesannet" }}
-        />
-<Button
-  variant="outlined"
-  color="error"
-  onClick={() => {
-    console.log("Nupp vajutatud");
-    onDelete(task.id);              
-  }}
->
-  Sain tehtud!
-</Button>
-      </ListItem>
-    ))}
-  </List>
-);
 
+const TasksList: React.FC<TaskListProps> = ({ tasks, selectedId, onSelect, fetchTasks }) => {
+  return (
+    <List>
+      {tasks.map((task) => (
+        <ListItem
+          key={task.id}
+          sx={{ display: "flex", gap: 2, alignItems: "center", justifyContent: "space-between" }}
+        >
+          <span>{task.taskName}</span>
 
+          <Switch
+            checked={selectedId === task.id} // Directly bind checked to selection
+            onChange={() => {
+              // Toggle: select if not selected, deselect if already selected
+              onSelect(selectedId === task.id ? null : task.id);
+            }}
+            inputProps={{ "aria-label": `Muuda ülesannet ${task.taskName}` }}
+          />
+
+          <DeleteTask taskId={task.id} fetchTasks={fetchTasks} />
+        </ListItem>
+      ))}
+    </List>
+  );
+};
 
 export default Tasks;

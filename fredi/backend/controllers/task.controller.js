@@ -9,7 +9,7 @@ const tasks = [
     deleted: false,
   },
   {
-    id: "1727098800585",
+    id: "1727098800525",
     taskName: "korralda pallile ball",
     updatedAt: null,
     deleted: false,
@@ -53,7 +53,7 @@ exports.update = [
   checkValidation,
   (req, res) => {
     const { id, taskName } = req.body;
-    const task = task.find((t) => t.id === id && !t.deleted);
+    const task = tasks.find((t) => t.id === id && !t.deleted);
     if (!task) return res.status(404).json({ error: "pole ülesandeid" });
 
     task.taskName = taskName.trim();
