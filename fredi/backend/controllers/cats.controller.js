@@ -1,3 +1,5 @@
+const { v4: uuidv4 } = require("uuid");
+const { body, param, validationResult } = require("express-validator");
 
 const cats = [
   {
@@ -16,58 +18,64 @@ const cats = [
   },
 ];
 
-const {v4: uuidv4} = require("uuid");
+// middleware to check validation
+const checkValidation = (req, res, next) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() });
+  next();
+};
 
-exports.create = (req, res) => {
-      const { name } = req.body;
+// CREATE
+exports.create = [
+  body("name").isString().trim().notEmpty().withMessage("Name must be a non-empty string"),
+  checkValidation,
+  (req, res) => {
+    const { name } = req.body;
     const addedCat = {
       id: uuidv4(),
       name,
       createdAt: Date.now(),
       updatedAt: null,
       deleted: false,
-    }
-
+    };
     cats.push(addedCat);
-
-
     console.log("controller siin", addedCat);
-    res.sendStatus(201);
-};
+    res.status(201).json(addedCat);
+  },
+];
 
+// READ
 exports.read = (req, res) => {
-    res.send(cats);
-  }
-
-exports.update = (req, res) => {
-  const { id, name } = req.body;
-
-  const cat = cats.find((c) => c.id === id);
-
-  if (!cat) {
-    return res.status(404).json({ error: "Cat not found" });
-  }
-
-  if (typeof name !== "string" || name.trim() === "") {
-    return res.status(400).json({ error: "Name must be a non-empty string" });
-  }
-
-  cat.name = name.trim();
-  cat.updatedAt = Date.now();
-
-  res.status(200).json(cat);
+  res.json(cats.filter((c) => !c.deleted));
 };
 
-exports.delete = (req, res) => {
-  const { id } = req.params; // Expect ID from URL params (e.g., /cats/:id)
+// UPDATE
+exports.update = [
+  body("id").isUUID().withMessage("Invalid cat ID"),
+  body("name").isString().trim().notEmpty().withMessage("Name must be a non-empty string"),
+  checkValidation,
+  (req, res) => {
+    const { id, name } = req.body;
+    const cat = cats.find((c) => c.id === id && !c.deleted);
+    if (!cat) return res.status(404).json({ error: "Cat not found" });
 
-  const cat = cats.find((c) => c.id === id && !c.deleted);
+    cat.name = name.trim();
+    cat.updatedAt = Date.now();
+    res.status(200).json(cat);
+  },
+];
 
-  if (!cat) {
-    return res.status(404).json({ error: "Cat not found" });
-  }
+// DELETE (soft delete)
+exports.delete = [
+  param("id").isUUID().withMessage("Invalid cat ID"),
+  checkValidation,
+  (req, res) => {
+    const { id } = req.params;
+    const cat = cats.find((c) => c.id === id && !c.deleted);
+    if (!cat) return res.status(404).json({ error: "Cat not found" });
 
-  cat.deleted = true;
-  res.status(200).json({ message: "Cat marked as deleted", cat });
-};
-
+    cat.deleted = true;
+    cat.updatedAt = Date.now();
+    res.status(200).json({ message: "Cat marked as deleted", cat });
+  },
+];
