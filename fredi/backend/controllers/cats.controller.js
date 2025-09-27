@@ -37,8 +37,26 @@ exports.create = (req, res) => {
 
 exports.read = (req, res) => {
     res.send(cats);
+  }
+
+exports.update = (req, res) => {
+  const { id, name } = req.body;
+
+  const cat = cats.find((c) => c.id === id);
+
+  if (!cat) {
+    return res.status(404).json({ error: "Cat not found" });
+  }
+
+  if (typeof name !== "string" || name.trim() === "") {
+    return res.status(400).json({ error: "Name must be a non-empty string" });
+  }
+
+  cat.name = name.trim();
+  cat.updatedAt = Date.now();
+
+  res.status(200).json(cat);
 };
 
-exports.update = (req, res) => {};
 
 exports.delete = (req, res) => {};
