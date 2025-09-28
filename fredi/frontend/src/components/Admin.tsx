@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react";
+import { useAuth } from "./tasks/AuthContext";
+
 import {
   Box,
   List,
@@ -20,7 +22,9 @@ const AdminPanel: React.FC = () => {
 
   const fetchAllTasks = async () => {
     try {
-      const res = await fetch("http://localhost:3000/task/all");
+   const res = await fetch("http://localhost:3000/task/all", {
+    headers: { Authorization: `Bearer ${token}` },
+  });
       if (!res.ok) throw new Error("Failed to fetch");
       const data = await res.json();
       setTasks(data);
@@ -30,6 +34,10 @@ const AdminPanel: React.FC = () => {
   };
 
   const restoreTask = async (id: string) => {
+      await fetch(`http://localhost:3000/task/${id}/restore`, {
+    method: "PATCH",
+    headers: { Authorization: `Bearer ${token}` },
+  });
     try {
       const res = await fetch(`http://localhost:3000/task/${id}/restore`, {
         method: "PATCH",
@@ -45,9 +53,10 @@ const AdminPanel: React.FC = () => {
 
   const deleteTask = async (id: string) => {
     try {
-      const res = await fetch(`http://localhost:3000/task/${id}`, {
-        method: "DELETE",
-      });
+  await fetch(`http://localhost:3000/task/${id}`, {
+    method: "DELETE",
+    headers: { Authorization: `Bearer ${token}` },
+  });
       if (res.ok) {
         console.log(`Task ${id} soft-deleted`);
         fetchAllTasks();
