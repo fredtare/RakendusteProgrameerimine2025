@@ -76,8 +76,7 @@ exports.delete = (req, res) => {
 
 //REVERT - ADMIN ONLY
 exports.restore = [
-  param("id").isUUID().withMessage("ülesannet ei leitud, vale ID"),
-  checkValidation,
+
   (req, res) => {
     const { id } = req.params;
     const task = tasks.find((t) => t.id === id);

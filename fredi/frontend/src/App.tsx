@@ -18,7 +18,7 @@ function App() {
       <AppBar position="static">
         <Toolbar variant="dense">
         <Button component = { Link } to='/apps' color="inherit">Cats and butts</Button>
-        <Button component = { Link } to='/admin' color="inherit">Adminni leht</Button>
+        <Button component = { Link } to='/tasks/admin' color="inherit">Adminni leht</Button>
         <Button component = { Link } to='/tasks' color="inherit">todo: todo</Button>
         <Button component = { Link } to='/weather' color="inherit">Ilmaennustus</Button>
         </Toolbar>
