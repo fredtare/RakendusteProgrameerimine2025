@@ -10,10 +10,13 @@ const {
 router.use(taskRouteMiddleware);
 
 
-// /cats/ Get endpoint level middleware
+// 
 router.get("/", taskGetRouteMiddleware, taskController.read);
 router.post("/", taskController.create);
 router.put("/", taskUpdateRouteMiddleware, taskController.update);
 router.delete("/:id", taskController.delete);
+//admin
+router.get("/all", taskController.readAll);
+router.patch("/:id/restore", taskController.restore);
 
 module.exports = router;
