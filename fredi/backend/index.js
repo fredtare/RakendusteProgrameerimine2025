@@ -9,7 +9,7 @@ app.use(cors());
 app.use(express.json());
 
 app.use("/cats", catsRoutes);
-app.use("/task", taskRoutes)
+app.use("/task", taskRoutes);
 
 app.get('/', (req, res) => {
   res.send('Hello World!')
