@@ -8,7 +8,7 @@ function requireAdmin(req, res, next) {
   const token = authHeader.split(" ")[1];
   try {
     const decoded = jwt.verify(token, SECRET);
-    if (decoded.role !== "admin") throw new Error("Not admin");
+    if (decoded.role !== "root") throw new Error("Not admin");
     req.user = decoded;
     next();
   } catch {

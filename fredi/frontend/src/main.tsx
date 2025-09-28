@@ -18,7 +18,7 @@ const ProtectedRoute: React.FC<{ children: JSX.Element }> = ({ children }) => {
   return token ? children : <Navigate to="/login" replace />;
 };
 
-/** Optional: simple login page component */
+
 import AdminLogin from "./components/AdminLogin";
 
 const router = createHashRouter([

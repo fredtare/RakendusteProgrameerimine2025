@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const taskController = require("../controllers/task.controller");
-const { requireAdmin } = require("./middlewares/auth.middlewares");
+const { requireAdmin } = require("../middlewares/auth.middlewares");
 
 const {
   taskRouteMiddleware,

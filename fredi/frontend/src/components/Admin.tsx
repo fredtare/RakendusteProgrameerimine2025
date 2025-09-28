@@ -1,14 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useAuth } from "./tasks/AuthContext";
-
-import {
-  Box,
-  List,
-  ListItem,
-  Button,
-  Typography,
-  Stack,
-} from "@mui/material";
+import { Box, List, ListItem, Button, Typography, Stack } from "@mui/material";
 
 type Task = {
   id: string;
@@ -19,13 +11,13 @@ type Task = {
 
 const AdminPanel: React.FC = () => {
   const [tasks, setTasks] = useState<Task[]>([]);
-
+  const { token } = useAuth();
   const fetchAllTasks = async () => {
     try {
-   const res = await fetch("http://localhost:3000/task/all", {
-    headers: { Authorization: `Bearer ${token}` },
-  });
-      if (!res.ok) throw new Error("Failed to fetch");
+      const res = await fetch("http://localhost:3000/task/all", {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      if (!res.ok) throw new Error("Tokenit ei saa ");
       const data = await res.json();
       setTasks(data);
     } catch (err) {
@@ -34,13 +26,10 @@ const AdminPanel: React.FC = () => {
   };
 
   const restoreTask = async (id: string) => {
-      await fetch(`http://localhost:3000/task/${id}/restore`, {
-    method: "PATCH",
-    headers: { Authorization: `Bearer ${token}` },
-  });
     try {
       const res = await fetch(`http://localhost:3000/task/${id}/restore`, {
         method: "PATCH",
+        headers: { Authorization: `Bearer ${token}` },
       });
       if (res.ok) {
         console.log(`Task ${id} restored`);
@@ -53,10 +42,10 @@ const AdminPanel: React.FC = () => {
 
   const deleteTask = async (id: string) => {
     try {
-  await fetch(`http://localhost:3000/task/${id}`, {
-    method: "DELETE",
-    headers: { Authorization: `Bearer ${token}` },
-  });
+      const res = await fetch(`http://localhost:3000/task/${id}`, {
+        method: "DELETE",
+        headers: { Authorization: `Bearer ${token}` },
+      });
       if (res.ok) {
         console.log(`Task ${id} soft-deleted`);
         fetchAllTasks();
@@ -88,23 +77,17 @@ const AdminPanel: React.FC = () => {
             }}
           >
             <span>
-              {task.taskName}{" "}
+              {task.taskName}
               {task.deleted && (
-                <Typography
-                  component="span"
-                  color="error"
-                  sx={{ fontStyle: "italic", ml: 1 }}
-                >
+                <Typography component="span" color="error" sx={{ ml: 1 }}>
                   (deleted)
                 </Typography>
               )}
             </span>
-
             <Stack direction="row" spacing={1}>
               {task.deleted ? (
                 <Button
                   variant="outlined"
-                  color="primary"
                   onClick={() => restoreTask(task.id)}
                 >
                   Restore

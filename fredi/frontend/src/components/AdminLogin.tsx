@@ -1,12 +1,14 @@
 import React, { useState } from "react";
 import { Box, Button, TextField, Typography, Stack } from "@mui/material";
-import { useAuth } from "./tasks/AuthContext";;
+import { useAuth } from "./tasks/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 const AdminLogin: React.FC = () => {
   const { login } = useAuth();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -20,6 +22,7 @@ const AdminLogin: React.FC = () => {
       const data = await res.json();
       if (res.ok && data.token) {
         login(data.token);
+         navigate("/tasks/admin");
       } else {
         setError(data.error || "Login failed");
       }
