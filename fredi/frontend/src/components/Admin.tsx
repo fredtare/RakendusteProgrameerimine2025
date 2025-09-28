@@ -1,5 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { Box, List, ListItem, Button, Typography } from "@mui/material";
+import {
+  Box,
+  List,
+  ListItem,
+  Button,
+  Typography,
+  Stack,
+} from "@mui/material";
 
 type Task = {
   id: string;
@@ -14,10 +21,11 @@ const AdminPanel: React.FC = () => {
   const fetchAllTasks = async () => {
     try {
       const res = await fetch("http://localhost:3000/task/all");
+      if (!res.ok) throw new Error("Failed to fetch");
       const data = await res.json();
       setTasks(data);
     } catch (err) {
-      console.error("Failed to fetch all tasks:", err);
+      console.error("Fetch error:", err);
     }
   };
 
@@ -29,11 +37,23 @@ const AdminPanel: React.FC = () => {
       if (res.ok) {
         console.log(`Task ${id} restored`);
         fetchAllTasks();
-      } else {
-        console.warn("Failed to restore");
       }
     } catch (err) {
-      console.error("Error restoring task:", err);
+      console.error("Restore error:", err);
+    }
+  };
+
+  const deleteTask = async (id: string) => {
+    try {
+      const res = await fetch(`http://localhost:3000/task/${id}`, {
+        method: "DELETE",
+      });
+      if (res.ok) {
+        console.log(`Task ${id} soft-deleted`);
+        fetchAllTasks();
+      }
+    } catch (err) {
+      console.error("Delete error:", err);
     }
   };
 
@@ -44,26 +64,52 @@ const AdminPanel: React.FC = () => {
   return (
     <Box sx={{ mt: 4 }}>
       <Typography variant="h2" gutterBottom>
-        Halda ülesandeid
+        Admin Panel – All Tasks
       </Typography>
+
       <List>
         {tasks.map((task) => (
           <ListItem
             key={task.id}
-            sx={{ display: "flex", justifyContent: "space-between" }}
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              gap: 2,
+            }}
           >
             <span>
-              {task.taskName} {task.deleted && "(deleted)"}
+              {task.taskName}{" "}
+              {task.deleted && (
+                <Typography
+                  component="span"
+                  color="error"
+                  sx={{ fontStyle: "italic", ml: 1 }}
+                >
+                  (deleted)
+                </Typography>
+              )}
             </span>
-            {task.deleted && (
-              <Button
-                variant="outlined"
-                color="primary"
-                onClick={() => restoreTask(task.id)}
-              >
-                Restore
-              </Button>
-            )}
+
+            <Stack direction="row" spacing={1}>
+              {task.deleted ? (
+                <Button
+                  variant="outlined"
+                  color="primary"
+                  onClick={() => restoreTask(task.id)}
+                >
+                  Restore
+                </Button>
+              ) : (
+                <Button
+                  variant="outlined"
+                  color="error"
+                  onClick={() => deleteTask(task.id)}
+                >
+                  Delete
+                </Button>
+              )}
+            </Stack>
           </ListItem>
         ))}
       </List>
